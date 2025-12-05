@@ -9,9 +9,11 @@ from asl_tb3_msgs.msg import TurtleBotState, TurtleBotControl
 class HeadingController(BaseHeadingController):
     def __init__(self):
         super().__init__("heading_controller")
-        self.kp: float = 2.0
-    def compute_control_with_goal(self,state: TurtleBotState,goal: TurtleBotState) :
-        err = wrap_angle(goal.theta - state.theta
+        self.declare_parameter("kp",2.0)
+    def kp(self):
+    	return float(self.get_parameter("kp").value)
+    def compute_control_with_goal(self,TurtleBotState,TurtleBotState) :
+        err = wrap_angle(goal.theta - state.theta)
         cmd = TurtleBotControl()
         cmd.omega = float(self.kp * err)
         return cmd
